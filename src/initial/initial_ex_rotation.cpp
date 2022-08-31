@@ -48,6 +48,12 @@ bool InitialEXRotation::CalibrationExRotation(vector<pair<Vector3d, Vector3d>> c
         A.block<4, 4>((i - 1) * 4, 0) = huber * (L - R);
     }
 
+    // Note: SVD
+    // U = svd.matrixU();
+    // V = svd.matrixV();
+    // S = svd.singularValues();   S 为奇异值组成的向量
+    // ComputeFullU(V): square matrix U(V)
+    // ComputeThinU(V): thin matrix U(V)
     JacobiSVD<MatrixXd> svd(A, ComputeFullU | ComputeFullV);
     Matrix<double, 4, 1> x = svd.matrixV().col(3);
     Quaterniond estimated_R(x);
